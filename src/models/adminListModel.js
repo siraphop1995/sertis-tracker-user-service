@@ -1,15 +1,19 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const UserSchema = new Schema({
-  lineId: {
+const AdminSchema = new Schema({
+  employeeId: {
     type: String,
     unique: true,
     Required: true
   },
-  employeeId: {
+  username: {
     type: String,
     unique: true,
+    Required: true
+  },
+  password: {
+    type: String,
     Required: true
   },
   firstName: {
@@ -17,10 +21,7 @@ const UserSchema = new Schema({
   },
   lastName: {
     type: String
-  },
-  nickName: {
-    type: String
   }
 });
 
-module.exports = mongoose.model('Users', UserSchema);
+module.exports = mongoose.model('Admin', AdminSchema);

@@ -11,6 +11,7 @@
  */
 const _ = require('lodash');
 const User = require('../models/userListModel');
+const Admin = require('../models/adminListModel');
 
 exports.helloWorld = (req, res, next) => {
   res.send('Hello World!');

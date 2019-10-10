@@ -14,7 +14,7 @@ const mongooseConfig = {
 };
 mongoose.connect(process.env.MONGO_URL, mongooseConfig, error => {
   if (error) throw error;
-  console.log('Successfully connected to mongodb');
+  console.log('Successfully connected to mongodb at:', process.env.MONGO_URL);
 });
 
 //Router

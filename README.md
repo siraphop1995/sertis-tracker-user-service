@@ -1,7 +1,7 @@
 # Sertis Tracker User Service (Prototype)
 
 1. Heroku: ``
-2. Github: `https://github.com/siraphop1995/sertis-tracker-line-service`
+2. Github: `https://github.com/siraphop1995/sertis-tracker-user-service`
 
 ## <a name="contents"></a> Contents
  - [Dependencies](#dependencies)
@@ -41,7 +41,7 @@ MONGO_URL=mongodb://localhost:27017/stt
 ## <a name="usage"></a> Usage
 Test server locally
 ```
-npm start
+npm run start:dev
 ```
 
 Routes:
