@@ -1,34 +1,38 @@
-'use strict'
+'use strict';
 
-const httpStatus = require('http-status')
+const httpStatus = require('http-status');
 
 module.exports = (err, req, res, next) => {
   const getStatusCode = err => {
-    let numberFromCode = Number.isInteger(err.code) && err.code
-    let numberFromStatus = Number.isInteger(err.status) && err.status
-    return numberFromCode || numberFromStatus || 500
-  }
+    let numberFromStatus = Number.isInteger(err.status) && err.status;
+    let numberFromCode = Number.isInteger(err.code) && err.code;
+    return numberFromStatus || numberFromCode || 500;
+  };
 
-  if (!err) err = {}
+  if (!err) err = {};
 
   switch (err.name) {
     case 'CastError':
-      err.status = 404
-      err.message = 'User Not Found.'
-      break
+      err.status = 404;
+      err.message = 'User Not Found.';
+      break;
     case 'MongoError':
-      err.status = 400
-      err.message = 'User already exists.'
-      break
+      if (err.code === 11000) {
+        err.message = 'User already exists.';
+      }
+      err.status = 400;
+      err.code = 400;
+      break;
   }
 
-  const status = getStatusCode(err)
+  const status = getStatusCode(err);
+  console.log(status);
 
   res.status(status).json({
     error: {
       code: status,
       status: httpStatus[status],
-      message: err.message,
+      message: err.message
     }
-  })
-}
+  });
+};

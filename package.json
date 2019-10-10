@@ -1,7 +1,7 @@
 {
-  "name": "nodejs-example-03",
+  "name": "stt-user-service",
   "version": "1.0.0",
-  "description": "Basic starter file for nodejs (express)",
+  "description": "Prototype project for sertise tracker",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",

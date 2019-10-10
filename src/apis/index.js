@@ -13,62 +13,88 @@ const _ = require('lodash');
 const User = require('../models/userListModel');
 const Admin = require('../models/adminListModel');
 
-exports.helloWorld = (req, res, next) => {
+exports.helloWorld = asyncify((req, res, next) => {
   res.send('Hello World!');
-};
+});
 
-exports.getAllUsers = async (req, res, next) => {
+exports.getAllAdmins = asyncify(async (req, res, next) => {
+  console.log('getAllAdmins');
+  const admin = await Admin.find({}, null);
+  res.json(admin);
+});
+
+exports.addAdmin = asyncify(async (req, res, next) => {
+  console.log('addAdmin');
+  let newAdmin = new Admin(req.body);
+  const admin = await newAdmin.save();
+  return res.json(admin);
+});
+
+exports.getAdmin = asyncify(async (req, res, next) => {
+  console.log('getAdmin');
+  const admin = await Admin.findOne({ _id: req.params.adminId });
+  res.json(admin);
+});
+
+exports.updateAdmin = asyncify(async (req, res, next) => {
+  console.log('updateAdmin');
+  let newAdmin = req.body;
+  const admin = await Admin.updateOne({ _id: req.params.adminId }, newAdmin);
+  res.json(admin);
+});
+
+exports.deleteAdmin = asyncify(async (req, res, next) => {
+  console.log('deleteAdmin');
+  const admin = await Admin.findByIdAndRemove(req.params.adminId);
+  const response = {
+    message: 'Delete admin id: ' + req.params.adminId + ' successfully',
+    id: admin._id
+  };
+  res.json(response);
+});
+
+exports.getAllUsers = asyncify(async (req, res, next) => {
   console.log('getAllUsers');
-  try {
-    const user = await User.find({}, null);
-    res.json(user);
-  } catch (err) {
-    next(err);
-  }
-};
+  const user = await User.find({}, null);
+  res.json(user);
+});
 
-exports.addUser = async (req, res, next) => {
+exports.addUser = asyncify(async (req, res, next) => {
   console.log('addUser');
-  try {
-    let newUser = new User(req.body);
-    const user = await newUser.save();
-    return res.json(user);
-  } catch (err) {
-    next(err);
-  }
-};
+  let newUser = new User(req.body);
+  const admin = await newUser.save();
+  return res.json(admin);
+});
 
-exports.getAUser = async (req, res, next) => {
-  console.log('getAUser');
-  try {
-    const user = await User.findById(req.params.userId);
-    res.json(user);
-  } catch (err) {
-    next(err);
-  }
-};
+exports.getUser = asyncify(async (req, res, next) => {
+  console.log('getUser');
+  const admin = await User.findById(req.params.adminId);
+  res.json(admin);
+});
 
-exports.updateUser = async (req, res, next) => {
+exports.updateUser = asyncify(async (req, res, next) => {
   console.log('updateUser');
-  try {
-    let newUser = req.body;
-    const user = await User.findByIdAndUpdate(req.params.userId, newUser);
-    res.json(user);
-  } catch (err) {
-    next(err);
-  }
-};
+  let newUser = req.body;
+  const admin = await User.findByIdAndUpdate(req.params.adminId, newUser);
+  res.json(admin);
+});
 
-exports.deleteUser = async (req, res, next) => {
+exports.deleteUser = asyncify(async (req, res, next) => {
   console.log('deleteUser');
-  try {
-    const user = await User.findByIdAndRemove(req.params.userId);
-    const response = {
-      message: 'Delete user id: ' + req.params.userId + ' successfully',
-      id: user._id
-    };
-    res.json(response);
-  } catch (err) {
-    next(err);
-  }
-};
+  const admin = await User.findByIdAndRemove(req.params.adminId);
+  const response = {
+    message: 'Delete admin id: ' + req.params.adminId + ' successfully',
+    id: admin._id
+  };
+  res.json(response);
+});
+
+function asyncify(fn) {
+  return async (req, res, next) => {
+    try {
+      return await fn.apply(null, arguments);
+    } catch (err) {
+      next(err);
+    }
+  };
+}

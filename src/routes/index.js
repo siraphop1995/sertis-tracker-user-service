@@ -4,6 +4,21 @@ module.exports = {
   'GET /': {
     middlewares: ['helloWorld']
   },
+  'GET /admin': {
+    middlewares: ['getAllAdmins']
+  },
+  'POST /admin': {
+    middlewares: ['addAdmin']
+  },
+  'GET /admin/:adminId': {
+    middlewares: ['getAdmin']
+  },
+  'PATCH /admin/:adminId': {
+    middlewares: ['updateAdmin']
+  },
+  'DELETE /admin/:adminId': {
+    middlewares: ['deleteAdmin']
+  },
   'GET /user': {
     middlewares: ['getAllUsers']
   },
@@ -11,7 +26,7 @@ module.exports = {
     middlewares: ['addUser']
   },
   'GET /user/:userId': {
-    middlewares: ['getAUser']
+    middlewares: ['getUser']
   },
   'PATCH /user/:userId': {
     middlewares: ['updateUser']
