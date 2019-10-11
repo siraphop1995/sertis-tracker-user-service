@@ -13,10 +13,6 @@ const _ = require('lodash');
 const User = require('../models/userListModel');
 const Admin = require('../models/adminListModel');
 
-exports.helloWorld = asyncify((req, res, next) => {
-  res.send('Hello World!');
-});
-
 exports.getAllAdmins = asyncify(async (req, res, next) => {
   console.log('getAllAdmins');
   const admin = await Admin.find({}, null);
@@ -89,12 +85,25 @@ exports.deleteUser = asyncify(async (req, res, next) => {
   res.json(response);
 });
 
+// function asyncify(fn) {
+//   return async (req, res, next) => {
+//     try {
+//       // return await fn(req, res, next);
+//       return await fn.apply(null, [req, res, next]);
+//     } catch (err) {
+//       next(err);
+//     }
+//   };
+// }
+
 function asyncify(fn) {
-  return async (req, res, next) => {
-    try {
-      return await fn.apply(null, arguments);
-    } catch (err) {
-      next(err);
-    }
+  return (req, res, next) => {
+    fn(req, res).catch(next);
   };
 }
+
+exports.helloWorld = async (req, res, next) => {
+  console.log('helloWorld');
+  // throw new Error('new err')
+  res.send('Hello World');
+};
