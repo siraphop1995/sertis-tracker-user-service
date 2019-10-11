@@ -12,7 +12,7 @@ module.exports = (router, routes, methods) => {
     const [httpVerb, resourceUri] = route.split(' ');
     const { middlewares = [] } = routes[route];
     const methodChain = middlewares.reduce((chain, middleware) => {
-      return chain.concat([methods[middleware]]);
+      return chain.concat([asyncWrapper(methods[middleware])]);
     }, []);
 
     router[httpVerb.toLowerCase()](resourceUri, methodChain);
@@ -21,16 +21,9 @@ module.exports = (router, routes, methods) => {
   return { subscribeRoute };
 };
 
-// function asyncify(fn) {
-//   return (req, res, next) => {
-//     fn(req, res).catch(next);
-//   };
-// }
-
-function asyncify(fn) {
+function asyncWrapper(fn) {
   return async (req, res, next) => {
     try {
-      // return await fn(req, res, next);
       return await fn.apply(null, [req, res, next]);
     } catch (err) {
       next(err);

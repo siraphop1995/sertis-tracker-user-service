@@ -13,33 +13,38 @@ const _ = require('lodash');
 const User = require('../models/userListModel');
 const Admin = require('../models/adminListModel');
 
-exports.getAllAdmins = asyncify(async (req, res, next) => {
+exports.helloWorld = (req, res) => {
+  console.log('helloWorld');
+  res.send('Hello World');
+};
+
+exports.getAllAdmins = async (req, res) => {
   console.log('getAllAdmins');
   const admin = await Admin.find({}, null);
   res.json(admin);
-});
+};
 
-exports.addAdmin = asyncify(async (req, res, next) => {
+exports.addAdmin = async (req, res) => {
   console.log('addAdmin');
   let newAdmin = new Admin(req.body);
   const admin = await newAdmin.save();
   return res.json(admin);
-});
+};
 
-exports.getAdmin = asyncify(async (req, res, next) => {
+exports.getAdmin = async (req, res) => {
   console.log('getAdmin');
   const admin = await Admin.findOne({ _id: req.params.adminId });
   res.json(admin);
-});
+};
 
-exports.updateAdmin = asyncify(async (req, res, next) => {
+exports.updateAdmin = async (req, res) => {
   console.log('updateAdmin');
   let newAdmin = req.body;
   const admin = await Admin.updateOne({ _id: req.params.adminId }, newAdmin);
   res.json(admin);
-});
+};
 
-exports.deleteAdmin = asyncify(async (req, res, next) => {
+exports.deleteAdmin = async (req, res) => {
   console.log('deleteAdmin');
   const admin = await Admin.findByIdAndRemove(req.params.adminId);
   const response = {
@@ -47,35 +52,35 @@ exports.deleteAdmin = asyncify(async (req, res, next) => {
     id: admin._id
   };
   res.json(response);
-});
+};
 
-exports.getAllUsers = asyncify(async (req, res, next) => {
+exports.getAllUsers = async (req, res, next) => {
   console.log('getAllUsers');
   const user = await User.find({}, null);
   res.json(user);
-});
+};
 
-exports.addUser = asyncify(async (req, res, next) => {
+exports.addUser = async (req, res, next) => {
   console.log('addUser');
   let newUser = new User(req.body);
   const admin = await newUser.save();
   return res.json(admin);
-});
+};
 
-exports.getUser = asyncify(async (req, res, next) => {
+exports.getUser = async (req, res, next) => {
   console.log('getUser');
   const admin = await User.findById(req.params.adminId);
   res.json(admin);
-});
+};
 
-exports.updateUser = asyncify(async (req, res, next) => {
+exports.updateUser = async (req, res, next) => {
   console.log('updateUser');
   let newUser = req.body;
   const admin = await User.findByIdAndUpdate(req.params.adminId, newUser);
   res.json(admin);
-});
+};
 
-exports.deleteUser = asyncify(async (req, res, next) => {
+exports.deleteUser = async (req, res, next) => {
   console.log('deleteUser');
   const admin = await User.findByIdAndRemove(req.params.adminId);
   const response = {
@@ -83,9 +88,9 @@ exports.deleteUser = asyncify(async (req, res, next) => {
     id: admin._id
   };
   res.json(response);
-});
+};
 
-// function asyncify(fn) {
+// function asyncWrapper(fn) {
 //   return async (req, res, next) => {
 //     try {
 //       // return await fn(req, res, next);
@@ -96,14 +101,8 @@ exports.deleteUser = asyncify(async (req, res, next) => {
 //   };
 // }
 
-function asyncify(fn) {
+function asyncWrapper(fn) {
   return (req, res, next) => {
     fn(req, res).catch(next);
   };
 }
-
-exports.helloWorld = async (req, res, next) => {
-  console.log('helloWorld');
-  // throw new Error('new err')
-  res.send('Hello World');
-};
