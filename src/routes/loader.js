@@ -6,6 +6,7 @@
  * route Configuration from './index', and middlewares form '../apis'.
  * It will make router.METHOD call according to route configuration.
  */
+const { asyncWrapper } = require('../utils/helperHandler');
 
 module.exports = (router, routes, methods) => {
   const subscribeRoute = route => {
@@ -20,13 +21,3 @@ module.exports = (router, routes, methods) => {
 
   return { subscribeRoute };
 };
-
-function asyncWrapper(fn) {
-  return async (req, res, next) => {
-    try {
-      return await fn.apply(null, [req, res, next]);
-    } catch (err) {
-      next(err);
-    }
-  };
-}
