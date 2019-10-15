@@ -6,4 +6,5 @@
  */
 module.exports = {
   userDocument: require('./models/userDocument'),
+  adminDocument: require('./models/adminDocument')
 }

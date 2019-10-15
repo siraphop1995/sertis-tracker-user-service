@@ -9,8 +9,9 @@
  * (list, get, create, update, delete). Consult mongoose documentation
  * for more details.
  */
-const Admin = require('../models/adminListModel');
+// const Admin = require('../models/adminListModel');
 const User = require('../db').userDocument
+const Admin = require('../db').adminDocument
 
 exports.helloWorld = (req, res) => {
   console.log('helloWorld');
