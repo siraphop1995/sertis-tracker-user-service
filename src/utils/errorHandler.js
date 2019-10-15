@@ -27,6 +27,7 @@ module.exports = (err, req, res, next) => {
   }
 
   const status = getStatusCode(err);
+  console.log(err.message);
   console.log(status);
 
   res.status(status).json({

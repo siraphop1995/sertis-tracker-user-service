@@ -10,8 +10,8 @@
  * for more details.
  */
 // const Admin = require('../models/adminListModel');
-const User = require('../db').userDocument
-const Admin = require('../db').adminDocument
+const User = require('../db').userDocument;
+const Admin = require('../db').adminDocument;
 
 exports.helloWorld = (req, res) => {
   console.log('helloWorld');
@@ -28,7 +28,7 @@ exports.addAdmin = async (req, res) => {
   console.log('addAdmin');
   let newAdmin = new Admin(req.body);
   const admin = await newAdmin.save();
-  return res.json(admin);
+  res.json(admin);
 };
 
 exports.getAdmin = async (req, res) => {
@@ -54,38 +54,43 @@ exports.deleteAdmin = async (req, res) => {
   res.json(response);
 };
 
-exports.getAllUsers = async (req, res, next) => {
+exports.getAllUsers = async (req, res) => {
   console.log('getAllUsers');
   const user = await User.find({}, null);
+  console.log(user);
   res.json(user);
 };
 
-exports.addUser = async (req, res, next) => {
+exports.addUser = async (req, res) => {
   console.log('addUser');
   let newUser = new User(req.body);
-  const admin = await newUser.save();
-  return res.json(admin);
+  const user = await newUser.save();
+  res.json(user);
 };
 
-exports.getUser = async (req, res, next) => {
+exports.getUser = async (req, res) => {
   console.log('getUser');
   const user = await User.findOne({ _id: req.params.userId });
-  res.json(admin);
+  res.json(user);
 };
 
-exports.updateUser = async (req, res, next) => {
+exports.updateUser = async (req, res) => {
   console.log('updateUser');
   let newUser = req.body;
   const user = await User.updateOne({ _id: req.params.userId }, newUser);
-  res.json(admin);
+  res.json(user);
 };
 
-exports.deleteUser = async (req, res, next) => {
+exports.deleteUser = async (req, res) => {
   console.log('deleteUser');
-  const user = await User.deleteOne({ _id: req.params.adminId });
+  const user = await User.deleteOne({ _id: req.params.userId });
+  let message = 'No user remove';
+  if (user.deletedCount >= 1) {
+    message = 'Delete user id: ' + req.params.userId + ' successfully';
+  }
   const response = {
-    message: 'Delete admin id: ' + req.params.adminId + ' successfully',
-    id: admin._id
+    message: message,
+    id: user._id
   };
   res.json(response);
 };

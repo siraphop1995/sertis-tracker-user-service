@@ -4,9 +4,9 @@ module.exports = {
       name: 'user',
       script: 'server.js',
       env: {
-        PORT: 7003,
+        PORT: 7001,
         NODE_ENV: 'development',
-        MONGO_URL: 'mongodb://localhost:27017/stt'
+        MONGO_URL: 'mongodb://localhost:27017/user'
       },
       env_production: {
         PORT: 7001,

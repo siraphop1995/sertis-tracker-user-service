@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 /**
  * Expose db models in this fashion to support multiple
@@ -7,4 +7,4 @@
 module.exports = {
   userDocument: require('./models/userDocument'),
   adminDocument: require('./models/adminDocument')
-}
+};

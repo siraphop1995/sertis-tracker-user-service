@@ -8,12 +8,6 @@ function asyncWrapper(fn) {
   };
 }
 
-// function asyncWrapper(fn) {
-//   return (req, res, next) => {
-//     fn(req, res).catch(next);
-//   };
-// }
-
 module.exports = {
   asyncWrapper
 };
