@@ -94,3 +94,28 @@ exports.deleteUser = async (req, res) => {
   };
   res.json(response);
 };
+
+//======= Dev Helper =========
+
+exports.generateUser = async (req, res) => {
+  console.log('generateUsr');
+  const { noUsr } = req.params;
+  let userArray = [];
+  for (let i = 1; i <= noUsr; i++) {
+    let newUser = new User({
+      lineId: 'LID_0' + i,
+      employeeId: 'EID_0' + i,
+      firstName: 'user_0' + i,
+      lastName: 'lname',
+      nickName: 'nname'
+    });
+    userArray.push(newUser);
+  }
+  await User.insertMany(userArray);
+  res.json(userArray);
+};
+
+exports.removeAllUser = async (req, res) => {
+  const user = await User.deleteMany({});
+  res.json(user);
+};
