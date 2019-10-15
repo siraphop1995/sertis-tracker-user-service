@@ -6,8 +6,12 @@
   "scripts": {
     "start": "node server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start:dev": "pm2 start ecosystem.config.js",
-    "stop": "pm2 delete ecosystem.config.js",
+    "start:dev": "npm run db:start && npm run server:start",
+    "stop:dev": "npm run server:stop && npm run db:stop",
+    "server:start": "pm2 start ecosystem.config.js",
+    "server:stop": "pm2 delete ecosystem.config.js",
+    "db:start": "./scripts/db-start.sh",
+    "db:stop": "docker stop stt-mongo",
     "log": "pm2 log user"
   },
   "author": "siraphop",

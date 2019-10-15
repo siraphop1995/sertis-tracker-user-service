@@ -9,8 +9,8 @@
  * (list, get, create, update, delete). Consult mongoose documentation
  * for more details.
  */
-const User = require('../models/userListModel');
 const Admin = require('../models/adminListModel');
+const User = require('../db').userDocument
 
 exports.helloWorld = (req, res) => {
   console.log('helloWorld');
@@ -45,7 +45,7 @@ exports.updateAdmin = async (req, res) => {
 
 exports.deleteAdmin = async (req, res) => {
   console.log('deleteAdmin');
-  const admin = await Admin.findByIdAndRemove(req.params.adminId);
+  const admin = await Admin.deleteOne({ _id: req.params.adminId });
   const response = {
     message: 'Delete admin id: ' + req.params.adminId + ' successfully',
     id: admin._id
@@ -68,20 +68,20 @@ exports.addUser = async (req, res, next) => {
 
 exports.getUser = async (req, res, next) => {
   console.log('getUser');
-  const admin = await User.findById(req.params.adminId);
+  const user = await User.findOne({ _id: req.params.userId });
   res.json(admin);
 };
 
 exports.updateUser = async (req, res, next) => {
   console.log('updateUser');
   let newUser = req.body;
-  const admin = await User.findByIdAndUpdate(req.params.adminId, newUser);
+  const user = await User.updateOne({ _id: req.params.userId }, newUser);
   res.json(admin);
 };
 
 exports.deleteUser = async (req, res, next) => {
   console.log('deleteUser');
-  const admin = await User.findByIdAndRemove(req.params.adminId);
+  const user = await User.deleteOne({ _id: req.params.adminId });
   const response = {
     message: 'Delete admin id: ' + req.params.adminId + ' successfully',
     id: admin._id
