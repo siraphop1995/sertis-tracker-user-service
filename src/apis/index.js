@@ -47,9 +47,13 @@ exports.updateAdmin = async (req, res) => {
 exports.deleteAdmin = async (req, res) => {
   console.log('deleteAdmin');
   const admin = await Admin.deleteOne({ _id: req.params.adminId });
+  let message = 'No user remove';
+  if (admin.deletedCount >= 1) {
+    message = 'Delete admin id: ' + req.params.adminId + ' successfully';
+  }
   const response = {
-    message: 'Delete admin id: ' + req.params.adminId + ' successfully',
-    id: admin._id
+    message: message,
+    id: user._id
   };
   res.json(response);
 };
@@ -57,7 +61,6 @@ exports.deleteAdmin = async (req, res) => {
 exports.getAllUsers = async (req, res) => {
   console.log('getAllUsers');
   const user = await User.find({}, null);
-  console.log(user);
   res.json(user);
 };
 
@@ -99,13 +102,15 @@ exports.deleteUser = async (req, res) => {
 
 exports.generateUser = async (req, res) => {
   console.log('generateUsr');
-  const { noUsr } = req.params;
+  const { userNo } = req.params;
   let userArray = [];
-  for (let i = 1; i <= noUsr; i++) {
+
+  for (let i = 1; i <= userNo; i++) {
+    let str = i.toString().length === 2 ? '' : '0';
     let newUser = new User({
-      lineId: 'LID_0' + i,
-      employeeId: 'EID_0' + i,
-      firstName: 'user_0' + i,
+      lineId: 'LID_' + str + i,
+      employeeId: 'EID_' + str + i,
+      firstName: 'user_' + str + i,
       lastName: 'lname',
       nickName: 'nname'
     });

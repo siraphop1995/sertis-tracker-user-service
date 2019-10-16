@@ -3,20 +3,26 @@
 const httpStatus = require('http-status');
 
 module.exports = (err, req, res, next) => {
-  console.log('errorHandler')
+  console.log('errorHandler');
   const getStatusCode = err => {
     let numberFromStatus = Number.isInteger(err.status) && err.status;
     let numberFromCode = Number.isInteger(err.code) && err.code;
-    return numberFromStatus || numberFromCode || 500;
+    let status = numberFromStatus || numberFromCode || 500;
+    if (typeof httpStatus[status] === 'undefined') {
+      err.message = 'Unknown status code: ' + status;
+      status = 500;
+    }
+    return status;
   };
 
   if (!err) err = {};
-
+  console.log(err.name);
   switch (err.name) {
     case 'CastError':
       err.status = 404;
       err.message = 'User Not Found.';
       break;
+    case 'BulkWriteError':
     case 'MongoError':
       if (err.code === 11000) {
         err.message = 'User already exists.';
@@ -26,9 +32,7 @@ module.exports = (err, req, res, next) => {
       break;
   }
 
-  const status = getStatusCode(err);
-  console.log(err.message);
-  console.log(status);
+  let status = getStatusCode(err);
 
   res.status(status).json({
     error: {

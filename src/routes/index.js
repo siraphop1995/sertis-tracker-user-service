@@ -34,7 +34,7 @@ module.exports = {
   'DELETE /user/:userId': {
     middlewares: ['deleteUser']
   },
-  'GET /generateUser/:noUsr': {
+  'GET /generateUser/:userNo': {
     middlewares: ['generateUser']
   },
   'GET /removeAllUser/': {
