@@ -98,6 +98,16 @@ exports.deleteUser = async (req, res) => {
   res.json(response);
 };
 
+exports.getEmployeeId = async (req, res) => {
+  console.log('getEmployeeId');
+  const user = await User.findOne({ lineId: req.params.lineId });
+
+  res.json({
+    employeeId: user.employeeId,
+    status: 'ok'
+  });
+};
+
 //======= Dev Helper =========
 
 exports.generateUser = async (req, res) => {
