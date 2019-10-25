@@ -12,6 +12,11 @@
 // const Admin = require('../models/adminListModel');
 const User = require('../db').userDocument;
 const Admin = require('../db').adminDocument;
+const path = require('path');
+const fs = require('fs');
+const util = require('util');
+const readFile = util.promisify(fs.readFile);
+const stringHash = require('string-hash');
 
 exports.helloWorld = (req, res) => {
   console.log('helloWorld');
@@ -112,22 +117,21 @@ exports.getEmployeeId = async (req, res) => {
 
 exports.generateUser = async (req, res) => {
   console.log('generateUsr');
-  const { userNo } = req.params;
   let userArray = [];
 
-  for (let i = 1; i <= userNo; i++) {
-    let str = i.toString().length === 2 ? '' : '0';
-    let newUser = new User({
-      lineId: 'LID_' + str + i,
-      employeeId: 'EID_' + str + i,
-      firstName: 'user_' + str + i,
-      lastName: 'lname',
-      nickName: 'nname'
-    });
-    userArray.push(newUser);
+  const contents = await readFile(
+    path.join(__dirname, '../utils/userList.json'),
+    'utf8'
+  );
+  let userList = JSON.parse(contents);
+
+  for (let i = 0; i < userList.length; i++) {
+    const hash = stringHash(userList[i].firstName + userList[i].lastName);
+    userList[i].lineId = hash.toString();
+    userArray.push(userList[i]);
   }
   await User.insertMany(userArray);
-  res.json(userArray);
+  res.json(userList);
 };
 
 exports.removeAllUser = async (req, res) => {

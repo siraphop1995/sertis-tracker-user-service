@@ -37,7 +37,7 @@ module.exports = {
   'GET /getEmployeeId/:lineId': {
     middlewares: ['getEmployeeId']
   },
-  'GET /generateUser/:userNo': {
+  'GET /generateUser': {
     middlewares: ['generateUser']
   },
   'GET /removeAllUser/': {

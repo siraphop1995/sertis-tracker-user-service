@@ -1,0 +1,27 @@
+[
+    {
+        "employeeId": "st999",
+        "firstName": "Siraphop",
+        "lastName": "Amornwutthiudja" 
+    },
+    {
+        "employeeId": "st011",
+        "firstName": "Sasivimon",
+        "lastName": "Seemachaiboworn"
+    },
+    {
+        "employeeId": "st078",
+        "firstName": "Chawanvit",
+        "lastName": "Ekarittikrai"
+    },
+    {
+        "employeeId": "st023",
+        "firstName": "Natnicha",
+        "lastName": "Nanthadechawuth"
+    },
+    {
+        "employeeId": "st058",
+        "firstName": "Naphat",
+        "lastName": "Sarunket"
+    }
+]
