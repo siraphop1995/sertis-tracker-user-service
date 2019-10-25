@@ -29,15 +29,15 @@ exports.getAllAdmins = async (req, res) => {
   res.json(admin);
 };
 
-exports.addAdmin = async (req, res) => {
-  console.log('addAdmin');
+exports.createAdmin = async (req, res) => {
+  console.log('createAdmin');
   let newAdmin = new Admin(req.body);
   const admin = await newAdmin.save();
   res.json(admin);
 };
 
-exports.getAdmin = async (req, res) => {
-  console.log('getAdmin');
+exports.findAdminById = async (req, res) => {
+  console.log('findAdminById');
   const admin = await Admin.findOne({ _id: req.params.adminId });
   res.json(admin);
 };
@@ -69,16 +69,23 @@ exports.getAllUsers = async (req, res) => {
   res.json(user);
 };
 
-exports.addUser = async (req, res) => {
-  console.log('addUser');
+exports.createUser = async (req, res) => {
+  console.log('createUser');
   let newUser = new User(req.body);
   const user = await newUser.save();
   res.json(user);
 };
 
-exports.getUser = async (req, res) => {
-  console.log('getUser');
+exports.findUserById = async (req, res) => {
+  console.log('findUserById');
   const user = await User.findOne({ _id: req.params.userId });
+  res.json(user);
+};
+
+exports.findUser = async (req, res) => {
+  console.log('findUser');
+  const query = req.body
+  const user = await User.findOne(query);
   res.json(user);
 };
 

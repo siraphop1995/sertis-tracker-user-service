@@ -4,34 +4,37 @@ module.exports = {
   'GET /': {
     middlewares: ['helloWorld']
   },
-  'GET /admin': {
+  'GET /getAllAdmins': {
     middlewares: ['getAllAdmins']
   },
-  'POST /admin': {
-    middlewares: ['addAdmin']
+  'POST /createAdmin': {
+    middlewares: ['createAdmin']
   },
-  'GET /admin/:adminId': {
-    middlewares: ['getAdmin']
+  'GET /findAdminById/:adminId': {
+    middlewares: ['findAdminById']
   },
-  'PATCH /admin/:adminId': {
+  'PATCH /updateAdmin/:adminId': {
     middlewares: ['updateAdmin']
   },
-  'DELETE /admin/:adminId': {
+  'DELETE /deleteAdmin/:adminId': {
     middlewares: ['deleteAdmin']
   },
-  'GET /user': {
+  'GET /getAllUsers': {
     middlewares: ['getAllUsers']
   },
-  'POST /user': {
-    middlewares: ['addUser']
+  'POST /createUser': {
+    middlewares: ['createUser']
   },
-  'GET /user/:userId': {
-    middlewares: ['getUser']
+  'GET /findUserById/:userId': {
+    middlewares: ['findUserById']
   },
-  'PATCH /user/:userId': {
+  'POST /findUser': {
+    middlewares: ['findUser']
+  },
+  'PATCH /updateUser/:userId': {
     middlewares: ['updateUser']
   },
-  'DELETE /user/:userId': {
+  'DELETE /deleteUser/:userId': {
     middlewares: ['deleteUser']
   },
   'GET /getEmployeeId/:lineId': {
@@ -40,7 +43,7 @@ module.exports = {
   'GET /generateUser': {
     middlewares: ['generateUser']
   },
-  'GET /removeAllUser/': {
+  'GET /removeAllUser': {
     middlewares: ['removeAllUser']
-  },
+  }
 };
