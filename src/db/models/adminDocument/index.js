@@ -10,7 +10,7 @@ const { hooks, methods, toJSON } = require('./functions');
 
 const AdminSchema = mongoose.Schema(
   {
-    employeeId: {
+    uid: {
       type: String,
       unique: true,
       Required: true

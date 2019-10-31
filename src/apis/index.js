@@ -112,10 +112,10 @@ exports.deleteUser = async (req, res) => {
 
 exports.getEmployeeId = async (req, res) => {
   console.log('getEmployeeId');
-  const user = await User.findOne({ lineId: req.params.lineId });
+  const user = await User.findOne({ lid: req.params.lid });
 
   res.json({
-    employeeId: user.employeeId,
+    uid: user.uid,
     status: 'ok'
   });
 };
@@ -134,11 +134,14 @@ exports.generateUser = async (req, res) => {
 
   for (let i = 0; i < userList.length; i++) {
     const hash = stringHash(userList[i].firstName + userList[i].lastName);
-    userList[i].lineId = hash.toString();
+    userList[i].lid = "L"+hash.toString();
+    userList[i].initCode = hash;
     userArray.push(userList[i]);
   }
+  console.log(userArray)
+
   await User.insertMany(userArray);
-  res.json(userList);
+  res.json(userArray);
 };
 
 exports.removeAllUser = async (req, res) => {

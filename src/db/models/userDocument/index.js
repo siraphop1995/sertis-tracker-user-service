@@ -10,12 +10,12 @@ const { hooks, methods, toJSON } = require('./functions');
 
 const userSchema = mongoose.Schema(
   {
-    lineId: {
+    lid: {
       type: String,
       unique: false,
       Required: true
     },
-    employeeId: {
+    uid: {
       type: String,
       unique: true,
       Required: true
@@ -28,6 +28,9 @@ const userSchema = mongoose.Schema(
     },
     nickName: {
       type: String
+    },
+    initCode: {
+      type: Number
     },
     metadata: {
       created: {

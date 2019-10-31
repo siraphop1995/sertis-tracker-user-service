@@ -16,7 +16,7 @@ module.exports = (err, req, res, next) => {
   };
 
   if (!err) err = {};
-  console.log(err.name);
+  console.error(err);
   switch (err.name) {
     case 'CastError':
       err.status = 404;

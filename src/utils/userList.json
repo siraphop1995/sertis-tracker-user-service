@@ -1,51 +1,51 @@
 [
   {
-    "employeeId": "st999",
+    "uid": "st999",
     "firstName": "Siraphop",
     "lastName": "Amornwutthiudja"
   },
   {
-    "employeeId": "st011",
+    "uid": "st011",
     "firstName": "Sasivimon",
     "lastName": "Seemachaiboworn"
   },
   {
-    "employeeId": "st078",
+    "uid": "st078",
     "firstName": "Chawanvit",
     "lastName": "Ekarittikrai"
   },
   {
-    "employeeId": "st023",
+    "uid": "st023",
     "firstName": "Natnicha",
     "lastName": "Nanthadechawuth"
   },
   {
-    "employeeId": "st058",
+    "uid": "st058",
     "firstName": "Naphat",
     "lastName": "Sarunket"
   },
   {
-    "employeeId": "st140",
+    "uid": "st140",
     "firstName": "Phanu",
     "lastName": "Trithawatchaiwong"
   },
   {
-    "employeeId": "st143",
+    "uid": "st143",
     "firstName": "Saratorn",
     "lastName": "Suvanun"
   },
   {
-    "employeeId": "st050",
+    "uid": "st050",
     "firstName": "Pusin",
     "lastName": "Kijjacharoenchai"
   },
   {
-    "employeeId": "st157",
+    "uid": "st157",
     "firstName": "Khematat",
     "lastName": "Akarakasameporn"
   },
   {
-    "employeeId": "st093",
+    "uid": "st093",
     "firstName": "Wimwipa",
     "lastName": "Bhumsiriwilai"
   }
