@@ -17,10 +17,33 @@ const fs = require('fs');
 const util = require('util');
 const readFile = util.promisify(fs.readFile);
 const stringHash = require('string-hash');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
-exports.helloWorld = (req, res) => {
-  console.log('helloWorld');
-  res.send('Hello World');
+exports.login = async (req, res) => {
+  const admin = await Admin.findOne({ username: req.body.username });
+  if (!admin) {
+    return res
+      .status(401)
+      .json({ message: 'Username and password does not match' });
+  }
+  if (!bcrypt.compareSync(req.body.password, admin.password)) {
+    return res
+      .status(401)
+      .json({ message: 'Username and password does not match' });
+  }
+
+  let token = jwt.sign({ admin }, 'secret', {
+    expiresIn: '7d'
+  });
+
+  admin.password = undefined;
+
+  return res.status(200).json({
+    admin,
+    message: 'Authenticated! Use this token in the Authorization header',
+    token: token
+  });
 };
 
 exports.getAllAdmins = async (req, res) => {
@@ -32,12 +55,15 @@ exports.getAllAdmins = async (req, res) => {
 exports.createAdmin = async (req, res) => {
   console.log('createAdmin');
   let newAdmin = new Admin(req.body);
+  newAdmin.password = bcrypt.hashSync(req.body.password, 10);
   const admin = await newAdmin.save();
+  admin.password = undefined;
   res.json(admin);
 };
 
 exports.findAdminById = async (req, res) => {
   console.log('findAdminById');
+
   const admin = await Admin.findOne({ _id: req.params.adminId });
   res.json(admin);
 };
@@ -65,8 +91,8 @@ exports.deleteAdmin = async (req, res) => {
 
 exports.getAllUsers = async (req, res) => {
   console.log('getAllUsers');
-  const user = await User.find({}, null);
-  res.json(user);
+  const user = await User.find({}, null, { sort: { uid: 1 } });
+  res.json({ user: user });
 };
 
 exports.createUser = async (req, res) => {
@@ -84,7 +110,7 @@ exports.findUserById = async (req, res) => {
 
 exports.findUser = async (req, res) => {
   console.log('findUser');
-  const query = req.body
+  const query = req.body;
   const user = await User.findOne(query);
   res.json(user);
 };
@@ -114,10 +140,17 @@ exports.getEmployeeId = async (req, res) => {
   console.log('getEmployeeId');
   const user = await User.findOne({ lid: req.params.lid });
 
-  res.json({
-    uid: user.uid,
-    status: 'ok'
-  });
+  if (!user) {
+    res.json({
+      uid: null,
+      status: 'not found'
+    });
+  } else {
+    res.json({
+      uid: user.uid,
+      status: 'ok'
+    });
+  }
 };
 
 //======= Dev Helper =========
@@ -133,12 +166,12 @@ exports.generateUser = async (req, res) => {
   let userList = JSON.parse(contents);
 
   for (let i = 0; i < userList.length; i++) {
-    const hash = stringHash(userList[i].firstName + userList[i].lastName);
-    userList[i].lid = "L"+hash.toString();
-    userList[i].initCode = hash;
+    let hash = stringHash(userList[i].firstName + userList[i].lastName);
+    hash = hash.toString().slice(0, 6);
+    userList[i].lid = 'L' + hash;
+    userList[i].initCode = parseInt(hash, 10);
     userArray.push(userList[i]);
   }
-  console.log(userArray)
 
   await User.insertMany(userArray);
   res.json(userArray);

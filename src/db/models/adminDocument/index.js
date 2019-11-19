@@ -10,11 +10,6 @@ const { hooks, methods, toJSON } = require('./functions');
 
 const AdminSchema = mongoose.Schema(
   {
-    uid: {
-      type: String,
-      unique: true,
-      Required: true
-    },
     username: {
       type: String,
       unique: true,
@@ -24,10 +19,7 @@ const AdminSchema = mongoose.Schema(
       type: String,
       Required: true
     },
-    firstName: {
-      type: String
-    },
-    lastName: {
+    accountName: {
       type: String
     },
     metadata: {
