@@ -92,34 +92,34 @@ exports.deleteAdmin = async (req, res) => {
 exports.getAllUsers = async (req, res) => {
   console.log('getAllUsers');
   const user = await User.find({}, null, { sort: { uid: 1 } });
-  res.json({ user: user });
+  res.json({ user });
 };
 
 exports.createUser = async (req, res) => {
   console.log('createUser');
   let newUser = new User(req.body);
   const user = await newUser.save();
-  res.json(user);
+  res.json({ user });
 };
 
 exports.findUserById = async (req, res) => {
   console.log('findUserById');
   const user = await User.findOne({ _id: req.params.userId });
-  res.json(user);
+  res.json({ user });
 };
 
 exports.findUser = async (req, res) => {
   console.log('findUser');
   const query = req.body;
   const user = await User.findOne(query);
-  res.json(user);
+  res.json({ user });
 };
 
 exports.updateUser = async (req, res) => {
   console.log('updateUser');
   let newUser = req.body;
   const user = await User.updateOne({ _id: req.params.userId }, newUser);
-  res.json(user);
+  res.json({ user });
 };
 
 exports.deleteUser = async (req, res) => {
@@ -174,10 +174,10 @@ exports.generateUser = async (req, res) => {
   }
 
   await User.insertMany(userArray);
-  res.json(userArray);
+  res.json({ user: userArray });
 };
 
 exports.removeAllUser = async (req, res) => {
   const user = await User.deleteMany({});
-  res.json(user);
+  res.json({ user });
 };
