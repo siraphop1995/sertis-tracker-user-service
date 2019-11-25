@@ -1,6 +1,9 @@
 'use strict';
 
 module.exports = {
+  'GET /': {
+    middlewares: ['helloWorld']
+  },
   'POST /login': {
     middlewares: ['login']
   },

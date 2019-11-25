@@ -19,6 +19,11 @@ const stringHash = require('string-hash');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
+exports.helloWorld = (req, res, next) => {
+  console.log('Hello World! user-service');
+  res.json({ message: 'Hello World! user-service' });
+};
+
 /**
  * @swagger
  * /:
