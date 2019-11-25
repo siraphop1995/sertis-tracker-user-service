@@ -9,7 +9,6 @@
  * (list, get, create, update, delete). Consult mongoose documentation
  * for more details.
  */
-// const Admin = require('../models/adminListModel');
 const User = require('../db').userDocument;
 const Admin = require('../db').adminDocument;
 const path = require('path');
@@ -20,6 +19,17 @@ const stringHash = require('string-hash');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
+/**
+ * @swagger
+ * /:
+ *   post:
+ *     description: Authenticate admin account.
+ *     responses:
+ *       200:
+ *         description: Correct username and password
+ *       401:
+ *         description: Wrong username or password
+ */
 exports.login = async (req, res) => {
   const admin = await Admin.findOne({ username: req.body.username });
   if (!admin) {
@@ -42,6 +52,14 @@ exports.login = async (req, res) => {
   return res.status(200).json({
     admin,
     message: 'Authenticated! Use this token in the Authorization header',
+    token: token
+  });
+};
+
+exports.createToken = async (req, res) => {
+  let token = jwt.sign({}, 'secret');
+
+  return res.status(200).json({
     token: token
   });
 };
@@ -98,6 +116,8 @@ exports.getAllUsers = async (req, res) => {
 exports.createUser = async (req, res) => {
   console.log('createUser');
   let newUser = new User(req.body);
+  let hash = createInitCode(newUser);
+  newUser.initCode = hash;
   const user = await newUser.save();
   res.json({ user });
 };
@@ -138,6 +158,7 @@ exports.deleteUser = async (req, res) => {
 
 exports.getEmployeeId = async (req, res) => {
   console.log('getEmployeeId');
+
   const user = await User.findOne({ lid: req.params.lid });
 
   if (!user) {
@@ -166,10 +187,9 @@ exports.generateUser = async (req, res) => {
   let userList = JSON.parse(contents);
 
   for (let i = 0; i < userList.length; i++) {
-    let hash = stringHash(userList[i].firstName + userList[i].lastName);
-    hash = hash.toString().slice(0, 6);
+    let hash = createInitCode(userList[i]);
     userList[i].lid = 'L' + hash;
-    userList[i].initCode = parseInt(hash, 10);
+    userList[i].initCode = hash;
     userArray.push(userList[i]);
   }
 
@@ -177,7 +197,19 @@ exports.generateUser = async (req, res) => {
   res.json({ user: userArray });
 };
 
-exports.removeAllUser = async (req, res) => {
+exports.deleteAllUser = async (req, res) => {
   const user = await User.deleteMany({});
   res.json({ user });
 };
+
+/**
+ * @param           {Object} user - user object
+ * @returns         {number} number
+ * @description     Take in user object to generate hash
+ *                  from firstName and lastName
+ */
+function createInitCode(user) {
+  let hash = stringHash(user.firstName + user.lastName);
+  hash = hash.toString().slice(0, 6);
+  return parseInt(hash, 10);
+}

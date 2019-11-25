@@ -4,6 +4,9 @@ module.exports = {
   'POST /login': {
     middlewares: ['login']
   },
+  'POST /createToken': {
+    middlewares: ['createToken']
+  },
   'GET /getAllAdmins': {
     middlewares: ['getAllAdmins']
   },
@@ -43,7 +46,7 @@ module.exports = {
   'GET /generateUser': {
     middlewares: ['generateUser']
   },
-  'GET /removeAllUser': {
-    middlewares: ['removeAllUser']
+  'DELETE /deleteAllUser': {
+    middlewares: ['deleteAllUser']
   }
 };
