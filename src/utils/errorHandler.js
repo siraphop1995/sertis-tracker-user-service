@@ -16,6 +16,7 @@ const httpStatus = require('http-status');
  */
 module.exports = (err, req, res, next) => {
   console.log('errorHandler');
+  console.error(err)
   const getStatusCode = err => {
     let numberFromStatus = Number.isInteger(err.status) && err.status;
     let numberFromCode = Number.isInteger(err.code) && err.code;
@@ -28,7 +29,7 @@ module.exports = (err, req, res, next) => {
   };
 
   if (!err) err = {};
-  console.error(err);
+  
   switch (err.name) {
     case 'CastError':
       err.status = 404;

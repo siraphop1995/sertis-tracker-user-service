@@ -22,7 +22,7 @@ const jwt = require('jsonwebtoken');
 /**
  * GET
  *   /
- *     @description To test api to user
+ *     @description To test api to user service
  *     @return {string} Hello message
  */
 exports.helloWorld = (req, res, next) => {
@@ -205,7 +205,7 @@ exports.findUserById = async (req, res) => {
 /**
  * POST
  *   /findUser
- *     @description Query for user
+ *     @description Query for user data
  *      @param req.body.query {Object} User data object.
  *      @return {object} User data object
  */
@@ -220,9 +220,9 @@ exports.findUser = async (req, res) => {
  * PATCH
  *   /updateUser/:userId
  *     @description Update user data
- *      @param req.params.adminId {string} User mongo id.
+ *      @param req.params.userId {string} User mongo id.
  *      @param req.body.query {Object} User data object.
- *      @return {object} User data object
+ *      @return {Object} User data object
  */
 exports.updateUser = async (req, res) => {
   console.log('updateUser');
@@ -306,6 +306,12 @@ exports.generateUser = async (req, res) => {
   res.json({ user: userArray });
 };
 
+/**
+ * GET
+ *   /deleteAllUser
+ *     @description Delete all user
+ *      @return {Object} Delete respond
+ */
 exports.deleteAllUser = async (req, res) => {
   const user = await User.deleteMany({});
   res.json({ user });
@@ -326,16 +332,11 @@ exports.createToken = async (req, res) => {
 };
 
 /**
- *
  * Take in user object to generate
  * hash from firstName and lastName
- *
  * @param     {object} user - user object
  * @returns   {number} number
- *
- * @example
- *
- *     createInitCode(user)
+ * @example   createInitCode(user)
  */
 function createInitCode(user) {
   let hash = stringHash(user.firstName + user.lastName);
