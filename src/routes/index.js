@@ -7,7 +7,7 @@ module.exports = {
   'POST /login': {
     middlewares: ['login']
   },
-  'POST /createToken': {
+  'GET /createToken': {
     middlewares: ['createToken']
   },
   'GET /getAllAdmins': {
@@ -18,6 +18,9 @@ module.exports = {
   },
   'GET /findAdminById/:adminId': {
     middlewares: ['findAdminById']
+  },
+  'POST /findAdmin': {
+    middlewares: ['findAdmin']
   },
   'PATCH /updateAdmin/:adminId': {
     middlewares: ['updateAdmin']

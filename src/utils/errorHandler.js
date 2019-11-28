@@ -2,6 +2,18 @@
 
 const httpStatus = require('http-status');
 
+/**
+ *
+ * Error handler middlewear
+ *
+ * @response
+ *       400:
+ *         description: Mongo related error
+ *       404:
+ *         description: User not found
+ *       500:
+ *         description: Unknown error
+ */
 module.exports = (err, req, res, next) => {
   console.log('errorHandler');
   const getStatusCode = err => {
