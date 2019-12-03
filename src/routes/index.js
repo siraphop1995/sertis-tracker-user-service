@@ -1,58 +1,59 @@
 'use strict';
 
 module.exports = {
-  'GET /': {
-    middlewares: ['helloWorld']
-  },
   'POST /login': {
     middlewares: ['login']
   },
-  'GET /createToken': {
-    middlewares: ['createToken']
-  },
-  'GET /getAllAdmins': {
+  'GET /admins': {
     middlewares: ['getAllAdmins']
   },
-  'POST /createAdmin': {
+  'POST /admins': {
     middlewares: ['createAdmin']
   },
-  'GET /findAdminById/:adminId': {
+  'GET /admins/:adminId': {
     middlewares: ['findAdminById']
   },
-  'POST /findAdmin': {
+  'POST /findAdmin': { // why this middleware exists?
     middlewares: ['findAdmin']
   },
-  'PATCH /updateAdmin/:adminId': {
+  'PATCH /admins/:adminId': {
     middlewares: ['updateAdmin']
   },
-  'DELETE /deleteAdmin/:adminId': {
+  'DELETE /admins/:adminId': {
     middlewares: ['deleteAdmin']
   },
-  'GET /getAllUsers': {
+  'GET /users': {
     middlewares: ['getAllUsers']
   },
-  'POST /createUser': {
+  'POST /users': {
     middlewares: ['createUser']
   },
-  'GET /findUserById/:userId': {
+  'GET /users/:userId': {
     middlewares: ['findUserById']
   },
-  'POST /findUser': {
+  'POST /findUser': { // why this middleware exists?
     middlewares: ['findUser']
   },
-  'PATCH /updateUser/:userId': {
+  'PATCH /users/:userId': {
     middlewares: ['updateUser']
   },
-  'DELETE /deleteUser/:userId': {
+  'DELETE /users/:userId': {
     middlewares: ['deleteUser']
   },
-  'GET /getEmployeeId/:lid': {
+  'GET /getEmployeeId/:lid': { // basically the same as findUserById
     middlewares: ['getEmployeeId']
+  },
+  // Test & dev routes
+  'GET /helloWorld': {
+    middlewares: ['helloWorld']
   },
   'GET /generateUser': {
     middlewares: ['generateUser']
   },
   'DELETE /deleteAllUser': {
     middlewares: ['deleteAllUser']
-  }
+  },
+  'GET /createToken': {
+    middlewares: ['createToken']
+  },
 };

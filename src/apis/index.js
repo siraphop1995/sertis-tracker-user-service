@@ -9,26 +9,17 @@
  * (list, get, create, update, delete). Consult mongoose documentation
  * for more details.
  */
-const User = require('../db').userDocument;
-const Admin = require('../db').adminDocument;
-const path = require('path');
-const fs = require('fs');
-const util = require('util');
-const readFile = util.promisify(fs.readFile);
-const stringHash = require('string-hash');
 const bcrypt = require('bcrypt');
+const fs = require('fs');
 const jwt = require('jsonwebtoken');
+const path = require('path');
+const stringHash = require('string-hash');
+const util = require('util');
 
-/**
- * GET
- *   /
- *     @description To test api to user service
- *     @return {string} Hello message
- */
-exports.helloWorld = (req, res, next) => {
-  console.log('Hello World! user-service');
-  res.json({ message: 'Hello World! user-service' });
-};
+const Admin = require('../db').adminDocument;
+const User = require('../db').userDocument;
+
+const readFile = util.promisify(fs.readFile);
 
 /**
  * POST
@@ -46,12 +37,7 @@ exports.helloWorld = (req, res, next) => {
  */
 exports.login = async (req, res) => {
   const admin = await Admin.findOne({ username: req.body.username });
-  if (!admin) {
-    return res
-      .status(401)
-      .json({ message: 'Username and password does not match' });
-  }
-  if (!bcrypt.compareSync(req.body.password, admin.password)) {
+  if (!admin || !bcrypt.compareSync(req.body.password, admin.password)) {
     return res
       .status(401)
       .json({ message: 'Username and password does not match' });
@@ -61,7 +47,7 @@ exports.login = async (req, res) => {
     expiresIn: '7d'
   });
 
-  admin.password = undefined;
+  delete admin.password;
 
   return res.status(200).json({
     admin,
@@ -94,7 +80,7 @@ exports.createAdmin = async (req, res) => {
   let newAdmin = new Admin(req.body);
   newAdmin.password = bcrypt.hashSync(req.body.password, 10);
   const admin = await newAdmin.save();
-  admin.password = undefined;
+  delete admin.password;
   res.json(admin);
 };
 
@@ -120,8 +106,7 @@ exports.findAdminById = async (req, res) => {
  */
 exports.findAdmin = async (req, res) => {
   console.log('findAdmin');
-  const query = req.body;
-  const admin = await Admin.findOne(query);
+  const admin = await Admin.findOne(req.body);
   res.json({ admin });
 };
 
@@ -135,8 +120,7 @@ exports.findAdmin = async (req, res) => {
  */
 exports.updateAdmin = async (req, res) => {
   console.log('updateAdmin');
-  let newAdmin = req.body;
-  const admin = await Admin.updateOne({ _id: req.params.adminId }, newAdmin);
+  const admin = await Admin.updateOne({ _id: req.params.adminId }, req.body);
   res.json(admin);
 };
 
@@ -150,14 +134,13 @@ exports.updateAdmin = async (req, res) => {
 exports.deleteAdmin = async (req, res) => {
   console.log('deleteAdmin');
   const admin = await Admin.deleteOne({ _id: req.params.adminId });
-  let message = 'No user remove';
-  if (admin.deletedCount >= 1) {
-    message = 'Delete admin id: ' + req.params.adminId + ' successfully';
-  }
   const response = {
-    message: message,
+    message: 'No user remove',
     id: user._id
   };
+  if (admin.deletedCount >= 1) {
+    response.message = 'Delete admin id: ' + req.params.adminId + ' successfully';
+  }
   res.json(response);
 };
 
@@ -211,8 +194,7 @@ exports.findUserById = async (req, res) => {
  */
 exports.findUser = async (req, res) => {
   console.log('findUser');
-  const query = req.body;
-  const user = await User.findOne(query);
+  const user = await User.findOne(req.body);
   res.json({ user });
 };
 
@@ -226,8 +208,7 @@ exports.findUser = async (req, res) => {
  */
 exports.updateUser = async (req, res) => {
   console.log('updateUser');
-  let newUser = req.body;
-  const user = await User.updateOne({ _id: req.params.userId }, newUser);
+  const user = await User.updateOne({ _id: req.params.userId }, req.body);
   res.json({ user });
 };
 
@@ -241,14 +222,13 @@ exports.updateUser = async (req, res) => {
 exports.deleteUser = async (req, res) => {
   console.log('deleteUser');
   const user = await User.deleteOne({ _id: req.params.userId });
-  let message = 'No user remove';
-  if (user.deletedCount >= 1) {
-    message = 'Delete user id: ' + req.params.userId + ' successfully';
-  }
   const response = {
-    message: message,
+    message: 'No user remove',
     id: user._id
   };
+  if (user.deletedCount >= 1) {
+    response.message = 'Delete user id: ' + req.params.userId + ' successfully';
+  }
   res.json(response);
 };
 
@@ -263,20 +243,25 @@ exports.deleteUser = async (req, res) => {
 exports.getEmployeeId = async (req, res) => {
   console.log('getEmployeeId');
   const user = await User.findOne({ lid: req.params.lid });
-  if (!user) {
-    res.json({
-      uid: null,
-      status: 'not found'
-    });
-  } else {
-    res.json({
-      uid: user.uid,
-      status: 'ok'
-    });
-  }
+  const response = {
+    uid: user ? null : user.uid,
+    status: user ? 'not found' : 'ok'
+  };
+  res.json(response);
 };
 
 //The following route are use for testing and development
+
+/**
+ * GET
+ *   /
+ *     @description To test api to user service
+ *     @return {string} Hello message
+ */
+exports.helloWorld = (req, res, next) => {
+  console.log('Hello World! user-service');
+  res.json({ message: 'Hello World! user-service' });
+};
 
 /**
  * GET
